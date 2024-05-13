@@ -169,14 +169,11 @@ async function listerCommunesCouvertesParIsochrone(isochrone) {
             if (dataReverse.features && dataReverse.features.length > 0) {
                 const codeINSEE = dataReverse.features[0].properties.citycode;
                 codesINSEE.add(codeINSEE);
-                // Ne pas retourner ici, continuez à collecter les codes INSEE
             } else {
                 console.error('Communes couvertes isochrone: aucun résultat trouvé pour le point:', point[0], point[1]);
-                // Ne pas retourner ici, continuez à traiter les autres points
             }
         } catch (error) {
             console.error('Erreur lors du géocodage du point:', 'lat', point[0], 'lon', point[1], error);
-            // Ne pas retourner ici, continuez à traiter les autres points
         }
     }
 
@@ -223,7 +220,7 @@ async function chargerEtablissements(codesINSEEArray) {
 
         // Compter les occurrences des coordonnées pour déterminer les icônes multiples
         let coordCounts = {};
-        let points = {};  // Pour stocker les points et vérifier si ils sont à l'intérieur de l'isochrone
+        let points = {};
         json.forEach(entry => {
             let coordKey = `${entry.Latitude},${entry.Longitude}`;
             coordCounts[coordKey] = (coordCounts[coordKey] || 0) + 1;
@@ -239,9 +236,15 @@ async function chargerEtablissements(codesINSEEArray) {
                 const codeINSEEPoint = entry.DEPCOM;
                 if (codesINSEESet.has(codeINSEEPoint)) {
                     let markerIcon = coordCounts[coordKey] > 1 ? iconMultiple : iconSingle;
-                    let marker = L.marker([parseFloat(lat), parseFloat(lon)], {icon: markerIcon, title: codeINSEEPoint}).addTo(carte);
-                    marker.bindPopup(`Code INSEE: ${codeINSEEPoint}`);
-                    totalPointsInsideIsochrone += 1;
+                    let marker = L.marker([parseFloat(lat), parseFloat(lon)], {icon: markerIcon}).addTo(carte);
+                    let popupContent = `Code INSEE: ${codeINSEEPoint}`;
+                    if (coordCounts[coordKey] > 1) {
+                        popupContent += `<br/>Nombre de d'infirmiers : ${coordCounts[coordKey]}`;
+                        totalPointsInsideIsochrone += coordCounts[coordKey];
+                    } else {
+                        totalPointsInsideIsochrone += 1;
+                    }
+                    marker.bindPopup(popupContent);
                 }
             }
         });
@@ -249,6 +252,8 @@ async function chargerEtablissements(codesINSEEArray) {
         console.error("Erreur lors du chargement des établissements:", error);
     }
 }
+
+
 
 
 
