@@ -78,7 +78,7 @@ window.addEventListener("message", async function(event) {
 });
 
 // Appelez testChargerDonnees() après avoir défini l'écouteur
-testChargerDonnees();
+// testChargerDonnees();
 
 
 function resetMap() {
