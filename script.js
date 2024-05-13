@@ -198,20 +198,6 @@ async function chargerIsochroneEtListerCommunes() {
 async function chargerEtablissements(codesINSEEArray) {
     let codesINSEESet = new Set(codesINSEEArray);
 
-    var iconSingle = L.icon({
-        iconUrl: 'img/pin.png',
-        iconSize: [24, 24],
-        iconAnchor: [12, 24],
-        popupAnchor: [0, -24]
-    });
-
-    var iconMultiple = L.icon({
-        iconUrl: 'img/multipin.png',
-        iconSize: [24, 24],
-        iconAnchor: [12, 24],
-        popupAnchor: [0, -24]
-    });
-
     try {
         const workbook = await chargerXlsx('bpe/inf/inf.xlsx');
         const firstSheetName = workbook.SheetNames[0];
@@ -233,12 +219,19 @@ async function chargerEtablissements(codesINSEEArray) {
             if (turf.booleanPointInPolygon(point, currentIsochrone.toGeoJSON())) {
                 const codeINSEEPoint = entry.DEPCOM;
                 if (codesINSEESet.has(codeINSEEPoint)) {
-                    let markerIcon = coordCounts[coordKey] > 1 ? iconMultiple : iconSingle;
-                    let marker = L.marker([parseFloat(lat), parseFloat(lon)], {icon: markerIcon}).addTo(carte);
-                    if (coordCounts[coordKey] > 1) {
-                        let popupContent = `Nombre d'infirmiers : ${coordCounts[coordKey]}`;
-                        marker.bindPopup(popupContent);
-                        totalPointsInsideIsochrone += coordCounts[coordKey];
+                    let count = coordCounts[coordKey];
+                    let iconHtml = `<div class="icon-label" style="background-image: url(${count > 1 ? 'img/multipin_mt.png' : 'img/pin.png'}); background-size: cover; width: 24px; height: 24px; position: relative;">
+                                        <span style="position: absolute; left: 14px; top: 20%; transform: translateY(-50%); color: black; font-size: 11px; font-weight: bold;">${count > 1 ? count : ''}</span>
+                                    </div>`;
+                    let customIcon = L.divIcon({
+                        html: iconHtml,
+                        className: '', // This removes default Leaflet icon styling
+                        iconSize: [24, 24],
+                        iconAnchor: [12, 24]  // The anchor of the icon
+                    });
+                    L.marker([parseFloat(lat), parseFloat(lon)], {icon: customIcon}).addTo(carte);
+                    if (count > 1) {
+                        totalPointsInsideIsochrone += count;
                     } else {
                         totalPointsInsideIsochrone += 1;
                     }
@@ -249,11 +242,6 @@ async function chargerEtablissements(codesINSEEArray) {
         console.error("Erreur lors du chargement des établissements:", error);
     }
 }
-
-
-
-
-
 
     async function updateMap() {
         if (!codesINSEE || codesINSEE.size === 0) {
