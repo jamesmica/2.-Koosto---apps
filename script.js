@@ -78,7 +78,7 @@ window.addEventListener("message", async function(event) {
 });
 
 // Appelez testChargerDonnees() après avoir défini l'écouteur
-// testChargerDonnees();
+testChargerDonnees();
 
 
 function resetMap() {
@@ -220,16 +220,26 @@ async function chargerEtablissements(codesINSEEArray) {
                 const codeINSEEPoint = entry.DEPCOM;
                 if (codesINSEESet.has(codeINSEEPoint)) {
                     let count = coordCounts[coordKey];
-                    let iconHtml = `<div class="icon-label" style="background-image: url(${count > 1 ? 'img/multipin_mt.png' : 'img/pin.png'}); background-size: cover; width: 24px; height: 24px; position: relative;">
-                                        <span style="position: absolute; left: 14px; top: 20%; transform: translateY(-50%); color: black; font-size: 11px; font-weight: bold;">${count > 1 ? count : ''}</span>
-                                    </div>`;
+                    let iconHtml = `
+                        <div class="icon-label" style="background-image: url(${count > 1 ? 'img/multipin_mt.png' : 'img/pin.png'}); background-size: cover; width: 24px; height: 24px; position: relative;">
+                            <span style="position: absolute; left: 14px; top: 20%; transform: translateY(-50%); color: black; font-size: 11px; font-weight: bold;">${count > 1 ? count : ''}</span>
+                        </div>
+                    `;
                     let customIcon = L.divIcon({
                         html: iconHtml,
                         className: '', // This removes default Leaflet icon styling
                         iconSize: [24, 24],
                         iconAnchor: [12, 24]  // The anchor of the icon
                     });
-                    L.marker([parseFloat(lat), parseFloat(lon)], {icon: customIcon}).addTo(carte);
+
+                    let marker = L.marker([parseFloat(lat), parseFloat(lon)], {icon: customIcon}).addTo(carte);
+                    marker.bindPopup(`
+                    <p style="width:184px; margin-top:24px;">Le détail des professionnels est uniquement disponible en version Premium.</p>
+                        <a href="https://www.koosto.fr/tarifs" target="_blank">
+                            <button class="pro-details">Ce professionnel en détail</button>
+                        </a>
+                    `);
+
                     if (count > 1) {
                         totalPointsInsideIsochrone += count;
                     } else {
