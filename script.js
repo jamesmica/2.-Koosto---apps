@@ -78,7 +78,7 @@ window.addEventListener("message", async function(event) {
 });
 
 // Appelez testChargerDonnees() après avoir défini l'écouteur
-testChargerDonnees();
+// testChargerDonnees();
 
 
 function resetMap() {
@@ -239,7 +239,7 @@ async function chargerEtablissements(codesINSEEArray) {
                     let marker = L.marker([parseFloat(lat), parseFloat(lon)], {icon: markerIcon}).addTo(carte);
                     let popupContent = `Code INSEE: ${codeINSEEPoint}`;
                     if (coordCounts[coordKey] > 1) {
-                        popupContent += `<br/>Nombre de d'infirmiers : ${coordCounts[coordKey]}`;
+                        popupContent += `<br/>Nombre d'infirmiers : ${coordCounts[coordKey]}`;
                         totalPointsInsideIsochrone += coordCounts[coordKey];
                     } else {
                         totalPointsInsideIsochrone += 1;
