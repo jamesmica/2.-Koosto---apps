@@ -28,3 +28,10 @@ div#maCarte {
 .pro-details:hover {
     background: #018D63;
 }
+
+.leaflet-popup {
+    opacity: 1;
+    transform: translate3d(316px, 338px, 0px);
+    bottom: 16px !important;
+    left: -116px;
+}
