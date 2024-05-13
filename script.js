@@ -78,7 +78,7 @@ window.addEventListener("message", async function(event) {
 });
 
 // Appelez testChargerDonnees() après avoir défini l'écouteur
-// testChargerDonnees();
+testChargerDonnees();
 
 
 function resetMap() {
@@ -218,7 +218,6 @@ async function chargerEtablissements(codesINSEEArray) {
         const worksheet = workbook.Sheets[firstSheetName];
         const json = XLSX.utils.sheet_to_json(worksheet, { raw: true });
 
-        // Compter les occurrences des coordonnées pour déterminer les icônes multiples
         let coordCounts = {};
         let points = {};
         json.forEach(entry => {
@@ -232,19 +231,17 @@ async function chargerEtablissements(codesINSEEArray) {
             const entry = points[coordKey];
             let point = turf.point([parseFloat(lon), parseFloat(lat)]);
             if (turf.booleanPointInPolygon(point, currentIsochrone.toGeoJSON())) {
-                // Le point est à l'intérieur de l'isochrone
                 const codeINSEEPoint = entry.DEPCOM;
                 if (codesINSEESet.has(codeINSEEPoint)) {
                     let markerIcon = coordCounts[coordKey] > 1 ? iconMultiple : iconSingle;
                     let marker = L.marker([parseFloat(lat), parseFloat(lon)], {icon: markerIcon}).addTo(carte);
-                    let popupContent = `Code INSEE: ${codeINSEEPoint}`;
                     if (coordCounts[coordKey] > 1) {
-                        popupContent += `<br/>Nombre d'infirmiers : ${coordCounts[coordKey]}`;
+                        let popupContent = `Nombre d'infirmiers : ${coordCounts[coordKey]}`;
+                        marker.bindPopup(popupContent);
                         totalPointsInsideIsochrone += coordCounts[coordKey];
                     } else {
                         totalPointsInsideIsochrone += 1;
                     }
-                    marker.bindPopup(popupContent);
                 }
             }
         });
@@ -252,6 +249,7 @@ async function chargerEtablissements(codesINSEEArray) {
         console.error("Erreur lors du chargement des établissements:", error);
     }
 }
+
 
 
 
