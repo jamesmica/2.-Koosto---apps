@@ -1,0 +1,9 @@
+{
+"type": "FeatureCollection",
+"name": "51255",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "idcar_200m": "CRS3035RES200mN2916400E3936400", "lcog_geo": "51255", "ind": 2.0 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 4.714889807, 49.236253192 ], [ 4.714696168, 49.238046618 ], [ 4.717436149, 49.238175697 ], [ 4.717629689, 49.236382266 ], [ 4.714889807, 49.236253192 ] ] ] ] } },
+{ "type": "Feature", "properties": { "idcar_200m": "CRS3035RES200mN2916400E3936600", "lcog_geo": "51255", "ind": 11.0 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 4.717629689, 49.236382266 ], [ 4.717436149, 49.238175697 ], [ 4.720176144, 49.238304709 ], [ 4.720369584, 49.236511272 ], [ 4.717629689, 49.236382266 ] ] ] ] } }
+]
+}

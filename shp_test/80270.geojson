@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "80270",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "idcar_200m": "CRS3035RES200mN3030000E3760800", "lcog_geo": "80270", "ind": 2.0 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 2.151729261, 50.112218492 ], [ 2.151433952, 50.114004879 ], [ 2.15421665, 50.114196963 ], [ 2.154511857, 50.112410567 ], [ 2.151729261, 50.112218492 ] ] ] ] } }
+]
+}

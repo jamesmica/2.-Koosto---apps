@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "55189",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "idcar_200m": "CRS3035RES200mN2910000E3987800", "lcog_geo": "55189", "ind": 4.0 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 5.424822317, 49.209793858 ], [ 5.424654802, 49.211588638 ], [ 5.427394756, 49.211700381 ], [ 5.427562171, 49.209905595 ], [ 5.424822317, 49.209793858 ] ] ] ] } }
+]
+}

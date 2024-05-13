@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "55189",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "idcar_200m": "CRS3035RES200mN2910000E3987800", "idcar_1km": "CRS3035RES1000mN2910000E3987000", "idcar_nat": "CRS3035RES8000mN2904000E3984000", "i_est_200": 1, "i_est_1km": 1, "lcog_geo": "55189", "ind": 4.0, "men": 1.4, "men_pauv": 0.1, "men_1ind": 0.4, "men_5ind": 0.2, "men_prop": 1.1, "men_fmp": 0.2, "ind_snv": 104679.7, "men_surf": 164.3, "men_coll": 0.2, "men_mais": 1.2, "log_av45": 0.2, "log_45_70": 0.4, "log_70_90": 0.1, "log_ap90": 0.7, "log_inc": 0.0, "log_soc": 0.0, "ind_0_3": 0.0, "ind_4_5": 0.1, "ind_6_10": 0.3, "ind_11_17": 0.9, "ind_18_24": 0.4, "ind_25_39": 0.4, "ind_40_54": 1.2, "ind_55_64": 0.2, "ind_65_79": 0.1, "ind_80p": 0.4, "ind_inc": 0.0 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 5.424822317, 49.209793858 ], [ 5.424654802, 49.211588638 ], [ 5.427394756, 49.211700381 ], [ 5.427562171, 49.209905595 ], [ 5.424822317, 49.209793858 ] ] ] ] } }
+]
+}

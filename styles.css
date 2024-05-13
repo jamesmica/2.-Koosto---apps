@@ -1,0 +1,30 @@
+body {
+    margin: 0 !important;
+    font-family: Figtree, Arial, Calibri;
+}
+
+div#maCarte {
+    height: 100vh !important;
+}
+
+#cartConteneur {
+        width: 100%;
+        height: 100vh;
+}
+
+.pro-details {
+    background: #02B680;
+    outline: none;
+    border: none;
+    border-radius: 80px;
+    color: white;
+    font-family: Calibri;
+    cursor: pointer;
+    padding: 4px 8px;
+    margin: 2px 0 0 0;
+    font-family: Figtree, Arial, Calibri;
+}
+
+.pro-details:hover {
+    background: #018D63;
+}
