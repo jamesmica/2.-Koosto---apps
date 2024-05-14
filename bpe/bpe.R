@@ -29,7 +29,7 @@ bpee_sf_wgs84 <- st_transform(bpee_sf, crs_wgs84)
 bpe1$Longitude <- st_coordinates(bpee_sf_wgs84)[,1]
 bpe1$Latitude <- st_coordinates(bpee_sf_wgs84)[,2]
 
-get_address <- function(longitude, latitude) {
+get_address <- function(longitude, latitude, row_number) {
   # Utilisation de tryCatch pour gérer les erreurs
   result <- tryCatch({
     response <- httr::GET(paste0("https://api-adresse.data.gouv.fr/reverse/?lon=", longitude, "&lat=", latitude))
@@ -38,12 +38,13 @@ get_address <- function(longitude, latitude) {
     }
     address_data <- httr::content(response, "parsed")
     if (length(address_data$features) > 0) {
+      print(paste("Processing row number:", row_number))
       return(address_data$features[[1]]$properties$label)
     } else {
       return(NA)
     }
   }, error = function(e) {
-    message("Error in fetching address for: ", longitude, ", ", latitude, " - ", e$message)
+    message("Error in fetching address for: ", longitude, ", ", latitude, " at row ", row_number, " - ", e$message)
     return(NA)  # Retourne NA en cas d'erreur
   })
   return(result)
@@ -51,11 +52,14 @@ get_address <- function(longitude, latitude) {
 
 
 
+
 # Appliquer la fonction pour chaque ligne
-bpe1$Adresse <- mapply(get_address, bpe1$Longitude, bpe1$Latitude)
+
 
 INF <- bpe1 %>%
   filter(TYPEQU == "D232")
+
+INF$Adresse <- mapply(get_address, INF$Longitude, INF$Latitude, seq_along(INF$Longitude))
 
 PEDPOD <- bpe1 %>%
   filter(TYPEQU == "D237")

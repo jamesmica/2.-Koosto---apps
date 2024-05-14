@@ -40,6 +40,43 @@ function testChargerDonnees() {
     window.dispatchEvent(new MessageEvent('message', testEvent));
 }
 
+async function getAddressFromCoordinates(lat, lon) {
+    const url = `https://api-adresse.data.gouv.fr/reverse/?lon=${lon}&lat=${lat}`;
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        if (data.features && data.features.length > 0) {
+            console.log(data.features[0].properties.label);
+            return data.features[0].properties.label;
+        } else {
+            console.error('Aucune adresse trouvée pour les coordonnées:', lat, lon);
+            return 'Adresse non trouvée';
+        }
+    } catch (error) {
+        console.error('Erreur lors de la récupération de l\'adresse:', error);
+        return 'Erreur lors de la récupération de l\'adresse';
+    }
+}
+
+async function afficherAdresseSurCarte(lat, lon) {
+    const adresse = await getAddressFromCoordinates(lat, lon);
+
+    // Créer une icône personnalisée
+    let customIcon = L.divIcon({
+        html: `
+        <div class="icon-label" style="background-image: url('img/my_pin_bleu_fonce.png'); background-size: cover; width: 36px; height: 36px; display: flex; justify-content: center; align-items: center;">
+        <span style="position: absolute; color: white; font-size: 11px; font-weight: bold;"></span>
+    </div>
+        `,
+        className: '', // This removes default Leaflet icon styling
+        iconSize: [36, 36],
+        iconAnchor: [18, 18]  // The anchor of the icon, centered
+    });
+
+    const marker = L.marker([lat, lon], {icon: customIcon}).addTo(carte);
+    marker.bindPopup(`${adresse || "Adresse d'origine"} `);
+}
+
 window.addEventListener("message", async function(event) {
     if (!['http://koosto.fr', 'http://editor.weweb.io', 'https://editor.weweb.io', 'https://koosto.fr', 'https://www.koosto.fr'].includes(event.origin)) {
         alert('Origine inconnue : ', event.origin);
@@ -71,6 +108,8 @@ window.addEventListener("message", async function(event) {
         grillePoints = [];
         await chargerIsochroneEtListerCommunes();
         await updateMap(); // Assurez-vous que cette fonction gère correctement les promesses.
+
+        await afficherAdresseSurCarte(lat, lon);
 
     } catch (error) {
         console.error("Erreur lors du traitement de l'événement message:", error);
