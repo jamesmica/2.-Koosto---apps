@@ -29,37 +29,12 @@ bpee_sf_wgs84 <- st_transform(bpee_sf, crs_wgs84)
 bpe1$Longitude <- st_coordinates(bpee_sf_wgs84)[,1]
 bpe1$Latitude <- st_coordinates(bpee_sf_wgs84)[,2]
 
-get_address <- function(longitude, latitude, row_number) {
-  # Utilisation de tryCatch pour gérer les erreurs
-  result <- tryCatch({
-    response <- httr::GET(paste0("https://api-adresse.data.gouv.fr/reverse/?lon=", longitude, "&lat=", latitude))
-    if (httr::status_code(response) != 200) {
-      stop("Failed to fetch address")
-    }
-    address_data <- httr::content(response, "parsed")
-    if (length(address_data$features) > 0) {
-      print(paste("Processing row number:", row_number))
-      return(address_data$features[[1]]$properties$label)
-    } else {
-      return(NA)
-    }
-  }, error = function(e) {
-    message("Error in fetching address for: ", longitude, ", ", latitude, " at row ", row_number, " - ", e$message)
-    return(NA)  # Retourne NA en cas d'erreur
-  })
-  return(result)
-}
-
-
-
 
 # Appliquer la fonction pour chaque ligne
 
 
 INF <- bpe1 %>%
   filter(TYPEQU == "D232")
-
-INF$Adresse <- mapply(get_address, INF$Longitude, INF$Latitude, seq_along(INF$Longitude))
 
 PEDPOD <- bpe1 %>%
   filter(TYPEQU == "D237")
@@ -73,10 +48,10 @@ PSY <- bpe1 %>%
 MED <- bpe1 %>%
   filter(TYPEQU == "D201")
 
-openxlsx::write.xlsx(MED,"inf/inf.xlsx")
-openxlsx::write.xlsx(MED,"pedpod/pedpod.xlsx")
-openxlsx::write.xlsx(MED,"mk/mk.xlsx")
-openxlsx::write.xlsx(MED,"psy/psy.xlsx")
+openxlsx::write.xlsx(INF,"inf/inf.xlsx")
+openxlsx::write.xlsx(PEDPOD,"pedpod/pedpod.xlsx")
+openxlsx::write.xlsx(MK,"mk/mk.xlsx")
+openxlsx::write.xlsx(PSY,"psy/psy.xlsx")
 openxlsx::write.xlsx(MED,"med/med.xlsx")
 
 
