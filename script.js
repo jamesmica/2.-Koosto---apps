@@ -117,7 +117,7 @@ window.addEventListener("message", async function(event) {
 });
 
 // Appelez testChargerDonnees() après avoir défini l'écouteur
-// testChargerDonnees();
+
 
 
 function resetMap() {
@@ -329,7 +329,7 @@ async function chargerEtablissements(codesINSEEArray) {
         // Filtrer et traiter toutes les caractéristiques fusionnées
         let filteredFeatures = allFeatures.filter(feature => {
             let idCar = feature.properties.idcar_200m;
-            if (!uniqueIds.has(idCar) && turf.intersect(feature.geometry, currentIsochrone.toGeoJSON())) {
+            if (!uniqueIds.has(idCar) && turf.booleanIntersects(feature.geometry, currentIsochrone.toGeoJSON())) {
                 uniqueIds.add(idCar); // Ajouter l'identifiant au Set pour éviter les doublons
                 countTiles++; // Incrémenter le compteur pour chaque carreau unique
                 sumInd += feature.properties.ind || 0; // Ajouter la valeur de 'ind' à la somme
@@ -380,4 +380,4 @@ async function chargerEtablissements(codesINSEEArray) {
         totalPointsInsideIsochrone = 0;
     }
 
-
+    testChargerDonnees();
