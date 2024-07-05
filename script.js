@@ -380,4 +380,4 @@ async function chargerEtablissements(codesINSEEArray) {
         totalPointsInsideIsochrone = 0;
     }
 
-    testChargerDonnees();
+    // testChargerDonnees();
